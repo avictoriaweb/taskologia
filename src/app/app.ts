@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Task } from './tasks/task';
 import { FormsModule } from '@angular/forms';
+import { TaskCard } from './tasks/task-card/task-card';
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, TaskCard],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -28,23 +29,23 @@ export class App {
   addTask() {
     const title = this.taskTitle.trim();
 
-    if(!title) {
+    if (!title) {
       return;
     }
 
     this.tasks.push({
-      id: this.tasks.length ? this.tasks.length +1 : 1,
+      id: this.tasks.length ? this.tasks.length + 1 : 1,
       title: title,
       completed: false,
     });
 
     this.taskTitle = '';
   }
-  deleteTask(id:number){
-this.tasks = this.tasks.filter(task => task.id !== id);
+  deleteTask(id: number) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 
-  getActiveTasksCount():number {
-    return this.tasks.filter(task => !task.completed).length;
+  getActiveTasksCount(): number {
+    return this.tasks.filter((task) => !task.completed).length;
   }
 }
