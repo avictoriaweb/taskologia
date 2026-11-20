@@ -12,6 +12,7 @@ import { TaskDetails } from './tasks/task-details/task-details';
 })
 export class App {
   @ViewChild('taskInput') taskInput!: ElementRef<HTMLInputElement>;
+  @ViewChild(TaskDetails) taskDetails?: TaskDetails;
   taskTitle: string = '';
   selectedTask: Task | null = null;
 
@@ -54,6 +55,7 @@ export class App {
 
     this.taskTitle = '';
   }
+
   deleteTask(id: number) {
     if (this.selectedTask && this.selectedTask.id === id) {
       this.selectedTask = null;
@@ -77,7 +79,12 @@ export class App {
   closeDetails() {
     this.selectedTask = null;
   }
+
   selectTask(task: Task) {
-    this.selectedTask = task;
+    if (this.selectedTask?.id === task.id) {
+      this.taskDetails?.highlightPanel();
+    } else {
+      this.selectedTask = task;
+    }
   }
 }
