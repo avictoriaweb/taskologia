@@ -10,7 +10,7 @@ import { required } from '@angular/forms/signals';
 })
 export class TaskCard {
   @Input({required:true}) task!: Task;
-
+@Input() isSelected: boolean = false;
   /*private _task!: Task;
   @Input({required: true})
   get task() {
@@ -23,12 +23,18 @@ export class TaskCard {
 
   @Output()toggled = new EventEmitter<Task>();
   @Output()deleted = new EventEmitter<number>();
+  @Output()selected = new EventEmitter<Task>();
 
-  toggle() {
+  toggle(event: Event) {
+    event.stopPropagation();
     this.toggled.emit(this.task);
   }
 
-  delete() {
+  delete(event: Event) {
+    event.stopPropagation();
     this.deleted.emit(this.task.id);
+  }
+  select(){
+    this.selected.emit(this.task);
   }
 }
