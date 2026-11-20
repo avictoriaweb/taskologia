@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Task } from './tasks/task';
 import { FormsModule } from '@angular/forms';
 import { TaskCard } from './tasks/task-card/task-card';
@@ -10,6 +10,7 @@ import { TaskCard } from './tasks/task-card/task-card';
   templateUrl: './app.html',
 })
 export class App {
+  @ViewChild('taskInput') taskInput!: ElementRef<HTMLInputElement>;
   taskTitle: string = '';
 
   tasks: Task[] = [
@@ -30,6 +31,7 @@ export class App {
     const title = this.taskTitle.trim();
 
     if (!title) {
+      this.taskInput.nativeElement.focus();
       return;
     }
 
@@ -47,5 +49,14 @@ export class App {
 
   getActiveTasksCount(): number {
     return this.tasks.filter((task) => !task.completed).length;
+  }
+
+  /*clearTaskInput(inputElement: HTMLInputElement){
+    this.taskTitle = '';
+    inputElement.focus();
+  }*/
+  clearTaskInput(){
+    this.taskTitle = '';
+    this.taskInput.nativeElement.focus();
   }
 }

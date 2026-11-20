@@ -11,14 +11,21 @@
       <div class="tasks__counter">Активных: {{ getActiveTasksCount() }}</div>
     </div>
     <form class="tasks__form" (ngSubmit)="addTask()">
-      <input type="text" class="tasks__input" name="taskTitle"
-             placeholder="Введите новую задачу" [(ngModel)]="taskTitle">
-      <button class="tasks__button" >Добавить</button>
+      <div class="tasks__input-wrapper">
+        <input type="text" class="tasks__input" name="taskTitle" #taskInput
+               placeholder="Введите новую задачу" [(ngModel)]="taskTitle">
+        @if (taskTitle){
+          <button class="tasks__clear" type="button" (click)="clearTaskInput()">
+            <img src="images/icons/cross.svg" alt="Cross">
+          </button>
+        }
+      </div>
+      <button class="tasks__button">Добавить</button>
     </form>
 
     <div class="tasks__list">
       @for (task of tasks; track task.id) {
-<app-task-card [task]="task" (toggled)="toggleTask($event)" (deleted)="deleteTask($event)" />
+        <app-task-card [task]="task" (toggled)="toggleTask($event)" (deleted)="deleteTask($event)" />
       } @empty {
         <div class="tasks__empty">
           <p>Задач пока нет</p>
