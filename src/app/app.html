@@ -17,6 +17,10 @@
                  placeholder="Введите новую задачу"
                  [ngModel] = "taskTitle()" (ngModelChange)="taskTitle.set($event)"
                  >
+          <div class="tasks__description-wrapper" [class.tasks__description-wrapper_show]="taskTitle().trim()">
+            <textarea class="tasks__textarea" name="taskDescription" placeholder="Добавьте описание задачи"
+            [ngModel]="taskDescription()" (ngModelChange)="taskDescription.set($event)"></textarea>
+          </div>
           @if (taskTitle()) {
             <button class="tasks__clear" type="button" (click)="clearTaskInput()">
               <img src="images/icons/cross.svg" alt="Cross">
@@ -29,8 +33,8 @@
       <div class="tasks__list">
         @for (task of tasks(); track task.id) {
           <app-task-card [task]="task" [isSelected]="selectedTask()?.id === task.id"
-                         (toggled)="toggleTask($event)" (deleted)="deleteTask($event)"
-                         (selected)="selectTask($event)" />
+                         (toggle)="toggleTask($event)" (delete)="deleteTask($event)"
+                         (select)="selectTask($event)" />
 
         } @empty {
           <div class="tasks__empty">
