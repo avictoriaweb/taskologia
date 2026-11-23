@@ -1,5 +1,5 @@
 <main class="tasks">
-  <div class="tasks__layout" [class.tasks__layout_with-details]="selectedTask">
+  <div class="tasks__layout" [class.tasks__layout_with-details]="selectedTask()">
     <section class="tasks__container">
       <div class="tasks__header">
         <div class="tasks__intro">
@@ -9,13 +9,15 @@
             <h1 class="tasks__title">Трекер задач</h1>
           </div>
         </div>
-        <div class="tasks__counter">Активных: {{ getActiveTasksCount() }}</div>
+        <div class="tasks__counter">Активных: {{ activeTasksCount() }}</div>
       </div>
       <form class="tasks__form" (ngSubmit)="addTask()">
         <div class="tasks__input-wrapper">
           <input type="text" class="tasks__input" name="taskTitle" #taskInput
-                 placeholder="Введите новую задачу" [(ngModel)]="taskTitle">
-          @if (taskTitle) {
+                 placeholder="Введите новую задачу"
+                 [ngModel] = "taskTitle()" (ngModelChange)="taskTitle.set($event)"
+                 >
+          @if (taskTitle()) {
             <button class="tasks__clear" type="button" (click)="clearTaskInput()">
               <img src="images/icons/cross.svg" alt="Cross">
             </button>
@@ -25,8 +27,8 @@
       </form>
 
       <div class="tasks__list">
-        @for (task of tasks; track task.id) {
-          <app-task-card [task]="task" [isSelected]="selectedTask?.id === task.id"
+        @for (task of tasks(); track task.id) {
+          <app-task-card [task]="task" [isSelected]="selectedTask()?.id === task.id"
                          (toggled)="toggleTask($event)" (deleted)="deleteTask($event)"
                          (selected)="selectTask($event)" />
 
@@ -40,8 +42,8 @@
       </div>
 
     </section>
-    @if (selectedTask) {
-      <app-tasks-details [task]="selectedTask" (close)="closeDetails()" ) />
+    @if (selectedTask()) {
+      <app-tasks-details [task]="selectedTask()!" (close)="closeDetails()" ) />
     }
   </div>
 

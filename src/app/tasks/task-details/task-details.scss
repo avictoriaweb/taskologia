@@ -28,6 +28,12 @@ height: 100%;
     color: #f5f5f5;
   }
 
+  &__completed{
+    .task-details__title{
+      text-decoration: line-through;
+    }
+  }
+
   &__close {
     display: flex;
     align-items: center;

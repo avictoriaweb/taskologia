@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, signal, ViewChild } from '@angular/core';
 import { Task } from './tasks/task';
 import { FormsModule } from '@angular/forms';
 import { TaskCard } from './tasks/task-card/task-card';
@@ -13,10 +13,10 @@ import { TaskDetails } from './tasks/task-details/task-details';
 export class App {
   @ViewChild('taskInput') taskInput!: ElementRef<HTMLInputElement>;
   @ViewChild(TaskDetails) taskDetails?: TaskDetails;
-  taskTitle: string = '';
-  selectedTask: Task | null = null;
+  taskTitle = signal('');
+  selectedTask = signal<Task | null>(null);
 
-  tasks: Task[] = [
+  tasks = signal<Task[]>([
     {
       id: 1,
       title: 'Изучить компоненты Angular',
@@ -32,59 +32,77 @@ export class App {
       description:
         'Собрать небольшое приложение: несколько компонентов, общий state на уровне родителя, кастомные пайпы для форматирования данных',
     },
-  ];
+  ]);
 
-  toggleTask(task: Task) {
-    task.completed = !task.completed;
+  activeTasksCount = computed(() =>
+    this.tasks().filter((task) => !task.completed).length
+  );
+
+  toggleTask(taskToToggle: Task) {
+    this.tasks.update((tasks) =>
+      tasks.map((task) =>
+        task.id === taskToToggle.id ? { ...task, completed: !task.completed } : task,
+      ),
+    );
+    if (this.selectedTask()?.id === taskToToggle.id) {
+      this.selectedTask.set(this.tasks().find((task) => task.id === taskToToggle.id) || null);
+    }
   }
 
   addTask() {
-    const title = this.taskTitle.trim();
+    const title = this.taskTitle().trim();
 
     if (!title) {
       this.taskInput.nativeElement.focus();
       return;
     }
 
-    this.tasks.push({
-      id: this.tasks.length ? this.tasks.length + 1 : 1,
+    const tasks = this.tasks();
+    const lastTask = tasks[tasks.length - 1];
+
+    const newTask: Task = {
+      id: lastTask ? lastTask.id + 1 : 1,
       title: title,
       completed: false,
       description: '',
-    });
+    };
 
-    this.taskTitle = '';
+    this.tasks.update((currentTasks) => [...currentTasks, newTask]);
+
+    this.taskTitle.set('');
   }
 
   deleteTask(id: number) {
-    if (this.selectedTask && this.selectedTask.id === id) {
-      this.selectedTask = null;
+    if (this.selectedTask()?.id === id) {
+      this.selectedTask.set(null);
     }
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    this.tasks.update((tasks) => tasks.filter((task) => task.id !== id));
   }
 
-  getActiveTasksCount(): number {
-    return this.tasks.filter((task) => !task.completed).length;
-  }
+
+  /*
+    getActiveTasksCount(): number {
+      return this.tasks().filter((task) => !task.completed).length;
+    }*/
 
   /*clearTaskInput(inputElement: HTMLInputElement){
     this.taskTitle = '';
     inputElement.focus();
   }*/
   clearTaskInput() {
-    this.taskTitle = '';
+    this.taskTitle.set('');
     this.taskInput.nativeElement.focus();
   }
 
   closeDetails() {
-    this.selectedTask = null;
+    this.selectedTask.set(null);
   }
 
   selectTask(task: Task) {
-    if (this.selectedTask?.id === task.id) {
+    if (this.selectedTask()?.id === task.id) {
       this.taskDetails?.highlightPanel();
     } else {
-      this.selectedTask = task;
+      this.selectedTask.set(task);
     }
   }
 }
