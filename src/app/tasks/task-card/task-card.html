@@ -1,21 +1,25 @@
 <div class="task-card" [class.task-card_completed]="task().completed"
      [class.task-card_selected]="isSelected()" (click)="select()">
-  <button class="task-card__status" type="button" (click)="toggle($event)" [appTooltip]="task().completed ? 'Отменить выполнение' : 'Выполнить'">
+  <button class="task-card__status" type="button" (click)="toggle($event)"
+          [appTooltip]="task().completed ? 'Отменить выполнение' : 'Выполнить'">
     @if (task().completed) {
       <img src="images/icons/tick.svg" alt="Tick">
     }
   </button>
 
   <div class="task-card__content">
-    <p class="task-card__title">{{task().title}}</p>
+    <p class="task-card__title">{{ task().title }}</p>
     @if (task().completed) {
-      <span class="task-card__badge">Выполнено</span>} @else {
+      <span class="task-card__badge">Выполнено</span>
+    } @else {
       <span class="task-card__badge task-card__badge_active">В работе</span>
     }
 
   </div>
+  @if (task().deadline) {
+    <div class="task-card__deadline" appTooltip="Дедлайн">
+      {{ task().deadline | taskDeadline }}
 
-  <button class="task-card__delete" type="button" (click)="delete($event)" appTooltip="Удалить">
-    <img src="images/icons/cross.svg" alt="Cross">
-  </button>
+    </div>
+  }
 </div>

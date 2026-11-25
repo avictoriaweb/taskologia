@@ -2,9 +2,11 @@ import { Component, input, output } from '@angular/core';
 import { Task } from '../task';
 import { required } from '@angular/forms/signals';
 import { TooltipDirective } from '../../shared/ui/tooltip';
+import { DatePipe } from '@angular/common';
+import { TaskDeadlinePipe } from '../task-deadline-pipe';
 
 @Component({
-  imports: [TooltipDirective],
+  imports: [TooltipDirective, DatePipe, TaskDeadlinePipe],
   selector: 'app-task-card',
   styleUrl: './task-card.scss',
   templateUrl: './task-card.html',
@@ -13,17 +15,11 @@ export class TaskCard {
   task = input.required<Task>();
   isSelected = input(false);
   toggled = output<Task>({ alias: 'toggle' });
-  deleted = output<number>({ alias: 'delete' });
   selected = output<Task>({ alias: 'select' });
 
   toggle(event: Event) {
     event.stopPropagation();
     this.toggled.emit(this.task());
-  }
-
-  delete(event: Event) {
-    event.stopPropagation();
-    this.deleted.emit(this.task().id);
   }
 
   select() {

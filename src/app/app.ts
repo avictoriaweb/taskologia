@@ -33,14 +33,23 @@ export class App {
       completed: true,
       description:
         'Разобраться с декораторами @Component, жизненным циклом, Input/Output и встроенным control flow (@if, @for).',
+      createdAt:'2026-11-21T16:32:14.000Z',
+      deadline:'2026-11-26T15:00:14.000Z',
+      priority: 'medium',
     },
-    { id: 2, title: 'Разобраться с binding', completed: false, description: '' },
+    { id: 2, title: 'Разобраться с binding', completed: false, description: '',
+      createdAt:'2026-11-25T10:32:14.000Z',
+      deadline:'2026-11-25T19:32:14.000Z',
+      priority: null,},
     {
       id: 3,
       title: 'Сделать первый мини-проект на Angular с тремя компонентами и двумя пайпами',
       completed: false,
       description:
         'Собрать небольшое приложение: несколько компонентов, общий state на уровне родителя, кастомные пайпы для форматирования данных',
+      createdAt:'2026-11-11T16:32:14.000Z',
+      deadline:'2026-11-29T15:00:14.000Z',
+      priority: 'high',
     },
   ]);
 
@@ -93,6 +102,9 @@ export class App {
       title: title,
       completed: false,
       description: description,
+      priority:null,
+      createdAt: new Date().toISOString(),
+      deadline: null,
     };
 
     this.tasks.update((currentTasks) => [...currentTasks, newTask]);
@@ -133,4 +145,6 @@ export class App {
       this.selectedTask.set(task);
     }
   }
+
+  protected readonly event = event;
 }

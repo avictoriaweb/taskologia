@@ -1,9 +1,26 @@
-<aside class="task-details" [class.task-details__completed]="task().completed"  #details>
-  <div class="task-details__header">
+<aside class="task-details" [class.task-details__completed]="task().completed" #details>
+  <div class="task-details__content">
+
+    <div class="task-details__header">
+      <div class="task-details__meta">
+        @if (task().deadline) {
+          <div class="task-details__deadline" appTooltip="Дедлайн">{{ task().deadline }}</div>
+        }
+        <button class="task-details__priority" type="button" appTooltip="Приоритет">
+          <img src="images/icons/flag.svg" alt="Flag">
+        </button>
+      </div>
+      <button class="task-details__close" type="button" (click)="close()" appTooltip="Закрыть">
+        <img src="images/icons/cross.svg" alt="Cross">
+      </button>
+    </div>
     <h2 class="task-details__title">{{ task().title }}</h2>
-    <button class="task-details__close" type="button" (click)="close()">
-      <img src="images/icons/cross.svg" alt="Cross">
-    </button>
+    <p class="task-details__description">{{ task().description }}</p>
   </div>
-  <p class="task-details__description">{{task().description}}</p>
+<div class="task-details__footer">
+  <div class="task-details__created">Создано: {{task().createdAt | date:"d MMMM 'в' HH:mm"}}</div>
+  <button class="task-details__delete" type="button" appTooltip="Удалить задачу" (click)="delete()">
+    <img src="images/icons/trash.svg" alt="Trash">
+  </button>
+</div>
 </aside>
