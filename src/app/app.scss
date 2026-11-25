@@ -78,14 +78,14 @@
   }
 
   &__form {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     gap: 12px;
     margin-bottom: 24px;
   }
 
   &__input-wrapper {
     position: relative;
+    flex: 1;
   }
 
   &__input {
@@ -136,7 +136,7 @@
       transform: translateY(-50%) scale(1.08);
     }
   }
-
+/*
   &__description-wrapper {
     max-height: 0;
     overflow: hidden;
@@ -149,7 +149,7 @@
       max-height: 140px;
       transform: translateY(0);
     }
-  }
+  }*/
 
   &__textarea {
     width: 100%;
@@ -247,7 +247,7 @@
     }
 
     &__form {
-      grid-template-columns: 1fr;
+     flex-direction:  column;
     }
   }
 

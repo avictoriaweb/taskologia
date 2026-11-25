@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
 import { Task } from '../task';
 import { required } from '@angular/forms/signals';
+import { TooltipDirective } from '../../shared/ui/tooltip';
 
 @Component({
-  imports: [],
+  imports: [TooltipDirective],
   selector: 'app-task-card',
   styleUrl: './task-card.scss',
   templateUrl: './task-card.html',
@@ -11,9 +12,9 @@ import { required } from '@angular/forms/signals';
 export class TaskCard {
   task = input.required<Task>();
   isSelected = input(false);
-  toggled = output<Task>({alias: "toggle" });
-  deleted = output<number>({alias: "delete"});
-  selected = output<Task>({alias: "select" });
+  toggled = output<Task>({ alias: 'toggle' });
+  deleted = output<number>({ alias: 'delete' });
+  selected = output<Task>({ alias: 'select' });
 
   toggle(event: Event) {
     event.stopPropagation();

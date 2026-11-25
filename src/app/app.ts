@@ -3,6 +3,8 @@ import { Task } from './tasks/task';
 import { FormsModule } from '@angular/forms';
 import { TaskCard } from './tasks/task-card/task-card';
 import { TaskDetails } from './tasks/task-details/task-details';
+import { TooltipDirective } from './shared/ui/tooltip';
+import { ShowIfValueDirective } from './shared/ui/show-if-value';
 
 type TaskDraft = {
   title: string;
@@ -10,7 +12,7 @@ type TaskDraft = {
 };
 
 @Component({
-  imports: [FormsModule, TaskCard, TaskDetails],
+  imports: [FormsModule, TaskCard, TaskDetails, TooltipDirective, ShowIfValueDirective],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -44,14 +46,12 @@ export class App {
 
   taskDescription = signal('');
 
-  activeTasksCount = computed(() =>
-    this.tasks().filter((task) => !task.completed).length
-  );
+  activeTasksCount = computed(() => this.tasks().filter((task) => !task.completed).length);
 
   constructor() {
-    const savedDraft  = localStorage.getItem(this.taskDraftStorageKey);
-    if(savedDraft){
-      const draft:TaskDraft = JSON.parse(savedDraft);
+    const savedDraft = localStorage.getItem(this.taskDraftStorageKey);
+    if (savedDraft) {
+      const draft: TaskDraft = JSON.parse(savedDraft);
       this.taskTitle.set(draft.title || '');
       this.taskDescription.set(draft.description || '');
     }
@@ -107,7 +107,6 @@ export class App {
     }
     this.tasks.update((tasks) => tasks.filter((task) => task.id !== id));
   }
-
 
   /*
     getActiveTasksCount(): number {
