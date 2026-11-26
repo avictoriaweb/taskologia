@@ -11,10 +11,13 @@ import {
 } from '@angular/core';
 import { Task } from '../task';
 import { TooltipDirective } from '../../shared/ui/tooltip';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
+import { TaskDeadlinePipe } from '../task-deadline-pipe';
+import { isDeadlineExpired } from '../task-deadline';
+import { TaskPriorityPipe } from './task-priority-pipe';
 
 @Component({
-  imports: [TooltipDirective, DatePipe],
+  imports: [TooltipDirective, DatePipe, TaskDeadlinePipe, NgClass, TaskPriorityPipe],
   selector: 'app-tasks-details',
   styleUrl: './task-details.scss',
   templateUrl: './task-details.html',
@@ -29,6 +32,7 @@ export class TaskDetails implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('details') details!: ElementRef<HTMLElement>;
   private openingAnimation?: Animation;
   private translateAnimation = 'translateX';
+  protected readonly isDeadlineExpired = isDeadlineExpired;
 
   ngOnInit() {
     if (window.innerWidth <= 900) {

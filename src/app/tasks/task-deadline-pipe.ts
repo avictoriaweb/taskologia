@@ -1,29 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { getDeadlineDaysDifference } from './task-deadline';
 
 @Pipe({
   name: 'taskDeadline',
 })
 export class TaskDeadlinePipe implements PipeTransform {
   transform(value: string | null): string {
-    if(!value) {
+    const days = getDeadlineDaysDifference(value);
+    if (days === null) {
       return '';
     }
-const deadlineDate = new Date(value);
-    if(isNaN(deadlineDate.getTime())){
-      return '';
-    }
-    const today = new Date();
-    deadlineDate.setHours(0,0,0,0);
-    today.setHours(0,0,0,0);
-    const difference = deadlineDate.getTime() - today.getTime();
-    const days = Math.round(difference / (1000 * 60 * 60 * 24));
-    if(days === 0){
+    if (days === 0) {
       return 'Сегодня';
     }
-    if(days === 1){
+    if (days === 1) {
       return 'Завтра';
     }
-    if(days < 0 ){
+    if (days < 0) {
       return 'Просрочено';
     }
 

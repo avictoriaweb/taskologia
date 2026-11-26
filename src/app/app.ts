@@ -40,7 +40,7 @@ export class App {
     { id: 2, title: 'Разобраться с binding', completed: false, description: '',
       createdAt:'2026-11-25T10:32:14.000Z',
       deadline:'2026-11-25T19:32:14.000Z',
-      priority: null,},
+      priority: 'low',},
     {
       id: 3,
       title: 'Сделать первый мини-проект на Angular с тремя компонентами и двумя пайпами',
